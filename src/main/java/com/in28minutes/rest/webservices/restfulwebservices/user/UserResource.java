@@ -2,10 +2,14 @@ package com.in28minutes.rest.webservices.restfulwebservices.user;
 import java.net.URI;
 import java.util.List;
 
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.*;
+
 import javax.validation.Valid;
 
 import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.Resource;
+import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +21,11 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
 public class UserResource {
+	/*
+	 HATEOAS (Hypermedia as the Engine of Application State) is a constraint of 
+	 the REST application architecture. A hypermedia-driven site provides information 
+	 to navigate the site's REST interfaces dynamically by including hypermedia links with the responses.
+	 */
 	
 	@Autowired
 	private UserDaoService service;
@@ -40,7 +49,26 @@ public class UserResource {
 		if(user == null) {
 			throw new UserNotFoundException("id-"+id);
 		}
+		
 		return user;
+	}
+	
+	// HATEOS
+	@GetMapping("/usershateos/{id}")
+	public Resource<User> retrieveUserHateos(@PathVariable int id) {
+		User user = service.findOne(id);
+		if(user == null) {
+			throw new UserNotFoundException("id-"+id);
+		}
+		//"all-users", SERVER_PATH + "/users"
+		// retrieveAllUsers
+		Resource<User> resource = new Resource<User>(user);
+		ControllerLinkBuilder linkto = 
+				linkTo(methodOn(this.getClass()).retrieveAllUsers());
+		
+		resource.add(linkto.withRel("all-users"));
+		
+		return resource;
 	}
 	
 	@DeleteMapping("/users/{id}")
@@ -94,8 +122,5 @@ public class UserResource {
 			
 			return ResponseEntity.created(location).build();
 		}
-		
-		
-		
 		
 }
