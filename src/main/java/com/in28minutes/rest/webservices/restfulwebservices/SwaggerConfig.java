@@ -3,7 +3,7 @@ package com.in28minutes.rest.webservices.restfulwebservices;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.assertj.core.util.Arrays;
+// import org.assertj.core.util.Arrays;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -21,10 +21,7 @@ public class SwaggerConfig {
 
 	public static final Contact DEFAULT_CONTACT = new Contact(
 			"Franck Mukendi", "htt://www.mukeapps.com", "franck.mukendi@gmail.com");
-	public static final ApiInfo DEFAULT_API_INFO = new ApiInfo(
-			"Awsome API Title", "Awsome API Description", "1.0", "urn:tos",
-			DEFAULT_CONTACT, "Apache 2.0", 
-			"http://www.apache.org/licenses/LICENSE-2.0");
+
 	
 /*	private static final  Set<String> DEFAULT_PRODUCES_AND_CONSUMES = 
 			new HashSet<String>(Arrays.asList("application/json","application/xml"));// prefered method */
@@ -46,7 +43,7 @@ public class SwaggerConfig {
 		DEFAULT_PRODUCES_AND_CONSUMES.add("application/xml");
 		
 		return new Docket(DocumentationType.SWAGGER_2)
-				.apiInfo(DEFAULT_API_INFO)
+				//.apiInfo(DEFAULT_API_INFO)
 				.produces(DEFAULT_PRODUCES_AND_CONSUMES)
 				.consumes(DEFAULT_PRODUCES_AND_CONSUMES);
 	}
